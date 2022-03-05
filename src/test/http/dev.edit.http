@@ -1,0 +1,8 @@
+PUT http://localhost:8080/developer/Mini
+Content-Type: application/json
+
+{
+  "developerLevel": "JUNIOR",
+  "developerSikllType": "FRONT_END",
+  "experienceYears": 2
+}
