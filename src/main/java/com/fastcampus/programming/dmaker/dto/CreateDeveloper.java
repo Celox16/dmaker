@@ -2,7 +2,7 @@ package com.fastcampus.programming.dmaker.dto;
 
 import com.fastcampus.programming.dmaker.entity.Developer;
 import com.fastcampus.programming.dmaker.type.DeveloperLevel;
-import com.fastcampus.programming.dmaker.type.DeveloperSikllType;
+import com.fastcampus.programming.dmaker.type.DeveloperSkillType;
 import lombok.*;
 
 import javax.validation.constraints.Max;
@@ -21,7 +21,7 @@ public class CreateDeveloper {
         @NotNull
         private DeveloperLevel developerLevel;
         @NotNull
-        private DeveloperSikllType developerSikllType;
+        private DeveloperSkillType developerSikllType;
         @NotNull
         @Min(0)
         @Max(20)
@@ -45,11 +45,11 @@ public class CreateDeveloper {
     @Builder
     public static class Response{
         private DeveloperLevel developerLevel;
-        private DeveloperSikllType developerSikllType;
+        private DeveloperSkillType developerSikllType;
         private Integer experienceYears;
         private String memberId;
 
-        public static Response fromEntity(Developer developer) {
+        public static Response fromEntity(@NonNull Developer developer) {
             return Response.builder()
                     .developerLevel(developer.getDeveloperLevel())
                     .developerSikllType(developer.getDeveloperSikllType())

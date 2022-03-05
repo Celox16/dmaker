@@ -2,7 +2,7 @@ package com.fastcampus.programming.dmaker.dto;
 
 import com.fastcampus.programming.dmaker.entity.Developer;
 import com.fastcampus.programming.dmaker.type.DeveloperLevel;
-import com.fastcampus.programming.dmaker.type.DeveloperSikllType;
+import com.fastcampus.programming.dmaker.type.DeveloperSkillType;
 import com.fastcampus.programming.dmaker.type.StatusCode;
 import lombok.*;
 
@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 public class DeveloperDetailDto {
     private DeveloperLevel developerLevel;
-    private DeveloperSikllType developerSikllType;
+    private DeveloperSkillType developerSikllType;
     private Integer experienceYears;
     private String memberId;
     private StatusCode statusCode;

@@ -1,7 +1,7 @@
 package com.fastcampus.programming.dmaker.dto;
 
 import com.fastcampus.programming.dmaker.type.DeveloperLevel;
-import com.fastcampus.programming.dmaker.type.DeveloperSikllType;
+import com.fastcampus.programming.dmaker.type.DeveloperSkillType;
 import lombok.*;
 
 import javax.validation.constraints.Max;
@@ -19,7 +19,7 @@ public class EditDeveloper {
         @NotNull
         private DeveloperLevel developerLevel;
         @NotNull
-        private DeveloperSikllType developerSikllType;
+        private DeveloperSkillType developerSikllType;
         @NotNull
         @Min(0)
         @Max(20)

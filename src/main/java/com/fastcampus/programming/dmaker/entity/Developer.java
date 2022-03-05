@@ -1,7 +1,8 @@
 package com.fastcampus.programming.dmaker.entity;
 
+import com.fastcampus.programming.dmaker.dto.CreateDeveloper;
 import com.fastcampus.programming.dmaker.type.DeveloperLevel;
-import com.fastcampus.programming.dmaker.type.DeveloperSikllType;
+import com.fastcampus.programming.dmaker.type.DeveloperSkillType;
 import com.fastcampus.programming.dmaker.type.StatusCode;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,7 +29,7 @@ public class Developer {
     private DeveloperLevel developerLevel;
 
     @Enumerated(EnumType.STRING)
-    private DeveloperSikllType developerSikllType;
+    private DeveloperSkillType developerSikllType;
 
     private Integer experienceYears;
     private String memberId;
