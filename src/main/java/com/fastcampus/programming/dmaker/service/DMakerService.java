@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.fastcampus.programming.dmaker.constant.DMakerConstant.MIN_SENIOR_EXPERIENCE_YEARS;
-import static com.fastcampus.programming.dmaker.constant.DMakerConstant.MX_JUNIOR_EXPERIENCE_YEARS;
+import static com.fastcampus.programming.dmaker.constant.DMakerConstant.MAX_JUNIOR_EXPERIENCE_YEARS;
 import static com.fastcampus.programming.dmaker.exception.DMakerErrorCode.*;
 
 @Service
@@ -104,13 +104,13 @@ public class DMakerService {
         }
 
         if (developerLevel == DeveloperLevel.JUNGNIOR &&
-                experienceYears < MX_JUNIOR_EXPERIENCE_YEARS
+                experienceYears < MAX_JUNIOR_EXPERIENCE_YEARS
                 || experienceYears > MIN_SENIOR_EXPERIENCE_YEARS) {
             throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
         }
 
         if (developerLevel == DeveloperLevel.JUNGNIOR
-                && experienceYears > MX_JUNIOR_EXPERIENCE_YEARS) {
+                && experienceYears > MAX_JUNIOR_EXPERIENCE_YEARS) {
             throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
         }
     }
