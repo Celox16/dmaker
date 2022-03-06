@@ -16,7 +16,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class DMakerController {
-    private final DMakerService dMakerService;
+    private final DMakerService dMakerService; // 서비스라는 디펜던시 의존하는(사용하는) 컨트롤러가 동작하기 위해선 서비스가 존재해야함 정의만 하면 동작을 하는게 안되지만
+    // 생성자만 만들어 놓으면 알아서 컨트롤러를 만들어줌, 이것이 DI + IoC임, 누군가가 만들어 놓은 서비스만 넣으면 동작이 된다.
+    // Spring 의 application context가 여러개의 bean들을 등록해있다가 컨트롤러가 필요한 서비스를 스프링이 알아서 만들어준다.
 
     @GetMapping("/developers")
     public List<DeveloperDto> getAllDevelopers() {
@@ -36,7 +38,7 @@ public class DMakerController {
 
         return dMakerService.createDeveloper(request);
     }
-
+    
     @PutMapping("/developer/{memberId}")
     public DeveloperDetailDto editDeveloper(@PathVariable final String memberId, @Valid @RequestBody final EditDeveloper.Request request) {
         return dMakerService.editDeveloper(memberId, request);

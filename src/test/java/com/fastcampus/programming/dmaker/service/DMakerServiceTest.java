@@ -51,7 +51,7 @@ class DMakerServiceTest {
     private CreateDeveloper.Request getCreateRequest(DeveloperLevel developerLevel, DeveloperSkillType developerSkillType, Integer experienceYears) {
         return CreateDeveloper.Request.builder()
             .developerLevel(developerLevel)
-            .developerSikllType(developerSkillType)
+            .developerSkillType(developerSkillType)
             .experienceYears(experienceYears)
             .memberId("memberId")
             .name("name")
@@ -102,11 +102,9 @@ class DMakerServiceTest {
         //then
         DMakerException dMakerException = assertThrows(DMakerException.class,
                 () -> dMakerService.createDeveloper(
-                        getCreateRequest(JUNIOR, FRONT_END,
-                                MAX_JUNIOR_EXPERIENCE_YEARS + 1)
+                        getCreateRequest(JUNIOR, FRONT_END,MAX_JUNIOR_EXPERIENCE_YEARS + 1)
                 ));
-        assertEquals(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED,
-                dMakerException.getDMakerErrorCode());
+        assertEquals(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED, dMakerException.getDMakerErrorCode());
     }
 
     @Test

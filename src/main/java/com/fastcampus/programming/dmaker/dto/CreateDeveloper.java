@@ -21,7 +21,7 @@ public class CreateDeveloper {
         @NotNull
         private DeveloperLevel developerLevel;
         @NotNull
-        private DeveloperSkillType developerSikllType;
+        private DeveloperSkillType developerSkillType;
         @NotNull
         @Min(0)
         @Max(20)

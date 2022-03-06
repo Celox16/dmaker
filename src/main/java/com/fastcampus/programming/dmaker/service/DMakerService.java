@@ -9,25 +9,25 @@ import com.fastcampus.programming.dmaker.entity.RetiredDeveloper;
 import com.fastcampus.programming.dmaker.exception.DMakerException;
 import com.fastcampus.programming.dmaker.repository.DeveloperRepository;
 import com.fastcampus.programming.dmaker.repository.RetiredDeveloperRepository;
-import com.fastcampus.programming.dmaker.type.DeveloperLevel;
 import com.fastcampus.programming.dmaker.type.StatusCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.fastcampus.programming.dmaker.constant.DMakerConstant.MIN_SENIOR_EXPERIENCE_YEARS;
-import static com.fastcampus.programming.dmaker.constant.DMakerConstant.MAX_JUNIOR_EXPERIENCE_YEARS;
 import static com.fastcampus.programming.dmaker.exception.DMakerErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class DMakerService {
+    @Value("${developer.level.min.senior}")
+    private final Integer minSeniorYears; // application.yml에 있는 최소값으로 들어가게 됨
     private final DeveloperRepository developerRepository;
     private final RetiredDeveloperRepository retiredDeveloperRepository;
 
@@ -44,7 +44,7 @@ public class DMakerService {
     private Developer createDeveloperFromRequest(CreateDeveloper.Request request) {
         return Developer.builder()
                 .developerLevel(request.getDeveloperLevel())
-                .developerSikllType(request.getDeveloperSikllType())
+                .developerSikllType(request.getDeveloperSkillType())
                 .experienceYears(request.getExperienceYears())
                 .memberId(request.getMemberId())
                 .statusCode(StatusCode.EMPLOYED)
@@ -55,7 +55,7 @@ public class DMakerService {
 
     private void validateCreateDeveloperRequest(@NonNull CreateDeveloper.Request request) {
         // business validation
-        validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
+        request.getDeveloperLevel().validateExperienceYears(request.getExperienceYears());
 
         developerRepository.findByMemberId(request.getMemberId())
                 .ifPresent(developer -> {
@@ -82,7 +82,7 @@ public class DMakerService {
 
     @Transactional
     public DeveloperDetailDto editDeveloper(String memberId, EditDeveloper.Request request) {
-        validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
+        request.getDeveloperLevel().validateExperienceYears(request.getExperienceYears());
 
         return DeveloperDetailDto.fromEntity(
                 getUpdatedDeveloperFromRequest(request, getDeveloperByMemberId(memberId))
@@ -97,24 +97,9 @@ public class DMakerService {
         return developer;
     }
 
-    private void validateDeveloperLevel(DeveloperLevel developerLevel, Integer experienceYears) {
-        if (developerLevel == DeveloperLevel.SENIOR &&
-                experienceYears < MIN_SENIOR_EXPERIENCE_YEARS) {
-            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
-        }
-
-        if (developerLevel == DeveloperLevel.JUNGNIOR &&
-                experienceYears < MAX_JUNIOR_EXPERIENCE_YEARS
-                || experienceYears > MIN_SENIOR_EXPERIENCE_YEARS) {
-            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
-        }
-
-        if (developerLevel == DeveloperLevel.JUNGNIOR
-                && experienceYears > MAX_JUNIOR_EXPERIENCE_YEARS) {
-            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
-        }
-    }
-
+    // 메소드에 들어가기 전 트랜잭션을 만들어 주고 정상적으로 실행이 되면 커밋, 예외가 발생하면 정책에 따라 롤백이나 커밋을
+    // 할 수 있게 해준다.
+    // AOP의 특정 Join Point에 의해 작동하게 됨
     @Transactional
     public DeveloperDetailDto deleteDeveloper(String memberId) {
         // 1. EMPLOYED -> RETIRED
